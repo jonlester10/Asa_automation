@@ -5,14 +5,20 @@
  */
 package ASA_Automation;
 
+import View.StartProgramView;
+
 /**
  *
  * @author Jon
  */
 public class ASAautomation {
     
+   public static String config;
+    
     public static void main(String[] args) {
         
+        StartProgramView startProgramView = new StartProgramView();
+        startProgramView.display();
     }
     
 }
