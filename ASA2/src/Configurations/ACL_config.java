@@ -14,87 +14,119 @@ import java.util.Scanner;
  *
  * @author Jon
  */
-public class ACL_config {
+public class ACL_config extends Configuration {
  
     private String menu;    
     private String promptMessage = 
-               "\nPlease Enter Your Selection                                   "
+               "Please Enter Your Selection                                   "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ;
 
     
     public ACL_config(){
-        menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            
+    }
+    //Access-List
+    public String getAccessMenu() {
+        String accessMenu = 
+               "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n Please Enter the Access-list                                 "
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+
+        
+        return accessMenu;
+    }
+    
+    //Action
+    public String getActionMenu() {
+        String actionMenu = 
+               "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n Please Choose the rule Action" 
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n P - Permit"
+            +  "\n D - Deny"
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+        
+        return actionMenu;
+    }
+    public String setAction(String input){
+        String action = "0";
+        switch(input){
+            case"P":
+                action = " permit";
+                break;
+            case "D":
+                action = " deny";
+                break;
+            default:
+                this.console.println(
+                                "\n***************************************"
+                              + "\n***** Invalid Selection Try Again *****"
+                              + "\n***************************************");
+                break;
+        }
+        return action;
+    }
+    
+    //Protocol
+    public String getProtocolMenu() {
+        String protocolMenu =
+               "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n Please Choose the rule Protocol" 
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n T - TCP"
+            +  "\n U - UDP"
+            +  "\n I - IP"
+            +  "\n C - ICMP"
+            +  "\n O - Object-group"
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                
+        return protocolMenu;
+    }
+    public String setProtocol(String input){
+        String protocol = "0";
+        switch(input){
+            case "T":
+                protocol = " tcp";
+                break;
+            case "U":
+                protocol = " udp";
+                break;
+            case "I":
+                protocol = " ip";
+                break;
+            case "C":
+                protocol = " icmp";
+                break;
+            case "O":
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The Service Object-Group                         "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                protocol = " object-group " + getInput();
+            default:
+                 this.console.println(
+                                "\n***************************************"
+                              + "\n***** Invalid Selection Try Again *****"
+                              + "\n***************************************");
+                break;
+        }
+        return protocol;
+    }
+    
+    // Source
+    public String srcMenu() {
+        String srcMenu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             +  "\n Enter Source Input                                           "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             +  "\n S - Single IP                                                "
             +  "\n N - Network                                                  "
             +  "\n O - Object                                                   "                
-            +  "\n G - Object-group                                             "                
+            +  "\n G - Object-group                                             "
+            +  "\n A - Any                                                      "
             +  "\n Q - Exit to Main Menu                                        "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
         
-        
+        return srcMenu;
     }
-    
-public void display() {
-        
-        boolean done = false; // set flag to not done
-        do {
-            // prompt for and get players name
-            String input = this.getInput();
-            System.out.println(this.promptMessage);
-            if (input.toUpperCase().equals("Q")) // user wants to quit
-                return; // exit the program
-            
-            String source = getSrc(input); //user inputs source IP
-            
-            //Set Menu for Destination
-            
-        menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            +  "\n Enter Destination Input                                      "
-            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            +  "\n S - Single IP                                                "
-            +  "\n N - Network                                                  "
-            +  "\n O - Object                                                   "                
-            +  "\n G - Object-group                                             "                
-            +  "\n Q - Exit to Main Menu                                        "
-            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-            
-        input = this.getInput();
-        
-        String destination = setDst(input);
-        
-        } while (!done);
-    }
-        
-    public String getInput() {
-        Scanner keyboard = new Scanner(System.in); //keyboard input stream
-        String value = "";
-        boolean valid = false; //set flag to invalid value entered
-
-        while(!valid) { // while a valid name has not been retrieved
-        
-            //prompt for the player's name
-            System.out.println(this.menu);
-        
-            value = keyboard.nextLine(); //get the name from the keyboard
-            value = value.trim(); //trim off the excess blanks
-            value = value.toUpperCase(); // converts to upper case letter
-        
-            // if the name is invalid (less than one character in length))
-            if (value.length() < 1) {
-               System.out.println(
-                       "\n*****************************************************"
-                     + "\n***** Invalid value - the value cannot be blank *****"
-                     + "\n*****************************************************");
-              continue; // and repeat again
-            }
-            valid = true; // set flag to end repetition
-        }
-    return value; // return the value
-    }
-        
-    
     public String getSrc(String source){
     
             switch (source){
@@ -139,33 +171,40 @@ public void display() {
         System.out.println(source);
         return source;
     }
-    public String configCreation(String acl, String action, String source, String destination, String protocol, int port){
+     
+    //Destination
+    public String dstMenu(){
+        String dstMenu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n Enter Destination Input                                      "
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n S - Single IP                                                "
+            +  "\n N - Network                                                  "
+            +  "\n O - Object                                                   "                
+            +  "\n G - Object-group                                             "
+            +  "\n A - Any                                                      "
+            +  "\n Q - Exit to Main Menu                                        "
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
         
-        ASAautomation.config = "\n access-list" + acl + "extended" + action + protocol + source + destination + " eq " + port;
-        
-        String returnMessage = "ACL Added Successfully";
-        
-        return returnMessage;
+        return dstMenu;   
     }
-
-    private String setDst(String Destination) {
+    public String setDst(String Destination) {
             
             switch (Destination){
                 case "S":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
-                        +  "\nPlease Enter The Source IP                                    "
+                        +  "\nPlease Enter The Destination IP                               "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     Destination = " host " + this.getInput();            
 
                     break;
                 case "N":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
-                        +  "\nPlease Enter The Source Network                               "
+                        +  "\nPlease Enter The Destination Network                          "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     Destination = this.getInput();
 
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
-                        +  "\nPlease Enter The Source Subnet                                "
+                        +  "\nPlease Enter The Destination Subnet                           "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     String subnet = this.getInput();
                     Destination = Destination + " " + subnet;
@@ -173,24 +212,138 @@ public void display() {
                     break;
                 case "O":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
-                        +  "\nPlease Enter The Source Object                                "
+                        +  "\nPlease Enter The Destination Object                           "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     Destination = " object " + this.getInput();
                     break;
                 case "G":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
-                        +  "\nPlease Enter The Source Object-Group                          "
+                        +  "\nPlease Enter The Destination Object-Group                     "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     Destination = " object-group " + this.getInput();
                 default:
-                    System.out.println(
+                    this.console.println(
                                      "\n***************************************"
                                    + "\n***** Invalid Selection Try Again *****"
                                    + "\n***************************************");
-                break;
+                    break;
             } 
         System.out.println(Destination);
         return Destination;
     }
     
+    //Port
+    public String getPortMenu(){
+        String portMenu = 
+               "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n Please Choose the rule Action" 
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n E - Equals"
+            +  "\n G - Greater Than"
+            +  "\n L - Less Than"
+            +  "\n N - Not"
+            +  "\n R - Range"
+            +  "\n O - Object-Group" 
+            +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"; 
+        
+        return portMenu;
+    }
+    public String setPort(String input){
+        String port= "0";
+        switch(input){
+            case "E":
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The Port Number                                  "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                port = " eq " + getInput();
+                break;
+            case "G":
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The Port Number                                  "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                port = " gt " + getInput();
+                break;
+            case "L":
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The Port Number                                  "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                port = " lt " + getInput();
+                break;
+            case "N":
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The Port Number                                  "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                port = " neq " + getInput();
+                break;
+            case "R":
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The First Port Number                            "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                 int int1 = Integer.parseInt(getInput());
+                menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
+                    +  "\nPlease Enter The Second Port Number                           "
+                    +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                int int2 = Integer.parseInt(getInput());
+                if (int1 < int2) {
+                    port = " rng " + int1 + " " + int2;
+                } else {
+                    this.console.println(
+                                "\n**************************************************************"
+                              + "\n***** Your first Number Must be smaller than your second *****"
+                              + "\n**************************************************************");
+                }
+            break;
+            default:
+                this.console.println(
+                                "\n***************************************"
+                              + "\n***** Invalid Selection Try Again *****"
+                              + "\n***************************************");
+                break;
+        }
+        
+        return port;
+    } 
+    
+    //Rule Creation
+    public boolean configCreation(String acl, String action, String source, String destination, String protocol, String port){
+        
+        ASAautomation.config += "\n access-list " + acl + " extended" + action + protocol + source + destination  + port;
+        
+        //TEST OUTPUT
+        this.console.println(ASAautomation.config);
+        
+        boolean returnMessage = true;
+        
+        return returnMessage;
+    }
+
+    @Override    
+    public String getInput() {
+        String value = "";
+        boolean valid = false; //set flag to invalid value entered
+try {
+        while(!valid) { // while a valid name has not been retrieved
+        
+            //prompt for the player's name
+            this.console.println(menu);
+            this.console.println(promptMessage);
+            value = this.keyboard.readLine(); //get the name from the keyboard
+            value = value.trim(); //trim off the excess blanks
+        
+            // if the name is invalid (less than one character in length)
+            if (value.length() < 1) {
+               this.console.println(
+                       "\n*****************************************************"
+                     + "\n***** Invalid value - the value cannot be blank *****"
+                     + "\n*****************************************************");
+              continue; // and repeat again
+            }
+            valid = true; // set flag to end repetition
+        }
+} catch(Exception e) {
+    this.console.println(" Class: " + getClass().getName() + "Error Reading Input: " + e.getMessage());
+}
+    return value; // return the value
+    }
+   
 }

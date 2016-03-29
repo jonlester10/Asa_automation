@@ -108,7 +108,7 @@ public class MainMenuView {
     }
 
     private void aclConfig() {
-        ACL_config acl = new ACL_config();
+        ACLconfigView acl = new ACLconfigView();
         acl.display();
         
     }
