@@ -6,7 +6,6 @@
 package Configurations;
 
 import ASA_Automation.ASAautomation;
-import java.util.Scanner;
 
 
 
@@ -29,7 +28,7 @@ public class ACL_config extends Configuration {
     public String getAccessMenu() {
         String accessMenu = 
                "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            +  "\n Please Enter the Access-list                                 "
+            +  "\n Please Enter the name of the  Access-list                    "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 
         
@@ -49,7 +48,7 @@ public class ACL_config extends Configuration {
         return actionMenu;
     }
     public String setAction(String input){
-        String action = "0";
+        String action = null;
         switch(input){
             case"P":
                 action = " permit";
@@ -83,7 +82,7 @@ public class ACL_config extends Configuration {
         return protocolMenu;
     }
     public String setProtocol(String input){
-        String protocol = "0";
+        String protocol = null;
         switch(input){
             case "T":
                 protocol = " tcp";
@@ -135,20 +134,17 @@ public class ACL_config extends Configuration {
                         +  "\nPlease Enter The Source IP                                    "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     source = " host " + this.getInput();            
-                    System.out.println(source);
                     break;
                 case "N":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
                         +  "\nPlease Enter The Source Network                               "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     source = this.getInput();
-                    System.out.println(source);
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
                         +  "\nPlease Enter The Source Subnet                                "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     String subnet = this.getInput();
-                    source = source + " " + subnet;
-                    System.out.println(source);
+                    source += " " + subnet;
                     break;
                 case "O":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
@@ -161,14 +157,18 @@ public class ACL_config extends Configuration {
                         +  "\nPlease Enter The Source Object-Group                          "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     source = " object-group " + this.getInput();
+                    break;
+                case "A":
+                    source = " any ";
+                    break;
                 default:
                     System.out.println(
                                      "\n***************************************"
                                    + "\n***** Invalid Selection Try Again *****"
                                    + "\n***************************************");
+                    source = null;
                 break;
             } 
-        System.out.println(source);
         return source;
     }
      
@@ -202,13 +202,11 @@ public class ACL_config extends Configuration {
                         +  "\nPlease Enter The Destination Network                          "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     Destination = this.getInput();
-
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
                         +  "\nPlease Enter The Destination Subnet                           "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     String subnet = this.getInput();
-                    Destination = Destination + " " + subnet;
-
+                    Destination += " " + subnet;
                     break;
                 case "O":
                     menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
@@ -221,14 +219,18 @@ public class ACL_config extends Configuration {
                         +  "\nPlease Enter The Destination Object-Group                     "
                         +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                     Destination = " object-group " + this.getInput();
+                    break;
+                case "A":
+                    Destination = " any";
+                    break;
                 default:
                     this.console.println(
                                      "\n***************************************"
                                    + "\n***** Invalid Selection Try Again *****"
                                    + "\n***************************************");
+                    Destination = null;
                     break;
             } 
-        System.out.println(Destination);
         return Destination;
     }
     
@@ -236,7 +238,7 @@ public class ACL_config extends Configuration {
     public String getPortMenu(){
         String portMenu = 
                "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            +  "\n Please Choose the rule Action" 
+            +  "\n Please Choose the Port Requirements" 
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             +  "\n E - Equals"
             +  "\n G - Greater Than"
@@ -249,7 +251,7 @@ public class ACL_config extends Configuration {
         return portMenu;
     }
     public String setPort(String input){
-        String port= "0";
+        String port= null;
         switch(input){
             case "E":
                 menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"                
@@ -291,6 +293,7 @@ public class ACL_config extends Configuration {
                                 "\n**************************************************************"
                               + "\n***** Your first Number Must be smaller than your second *****"
                               + "\n**************************************************************");
+                    port = null;
                 }
             break;
             default:
@@ -307,7 +310,7 @@ public class ACL_config extends Configuration {
     //Rule Creation
     public boolean configCreation(String acl, String action, String source, String destination, String protocol, String port){
         
-        ASAautomation.config += "\n access-list " + acl + " extended" + action + protocol + source + destination  + port;
+        ASAautomation.config += "\r\naccess-list " + acl + " extended" + action + protocol + source + destination  + port;
         
         //TEST OUTPUT
         this.console.println(ASAautomation.config);

@@ -5,7 +5,12 @@
  */
 package View;
 
+import ASA_Automation.ASAautomation;
 import Configurations.*;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -13,7 +18,8 @@ import java.util.Scanner;
  * @author Jon
  */
 public class MainMenuView {
-    
+    protected final BufferedReader keyboard = ASAautomation.getInFile();
+    protected final PrintWriter console = ASAautomation.getOutFile();
     private String menu;    
     private String promptMessage = 
                "\nPlease Enter Your Selection                                   "
@@ -24,6 +30,7 @@ public class MainMenuView {
             +  "\n Main Menu                                                    "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             +  "\n A - Create ACL Entry                                         "
+            +  "\n W - Write Configuration to a file                            "
             +  "\n Q - Quit Program                                             "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
  }
@@ -92,7 +99,7 @@ public class MainMenuView {
             case "G":
                 this.objGroupConfig();
                 break;
-            case "P":
+            case "W":
                 this.printConfig();
                 break;
             case "F":
@@ -126,11 +133,57 @@ public class MainMenuView {
     }
 
     private void printConfig() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.console.println("\n\nEnter the file path for the output of the configuration:");
+        String filePath = this.getStringInput();
+        try {
+            ASAautomation.config += "\r\nend"
+                                  + "\r\nwr mem";
+            try (PrintWriter fops = new PrintWriter(filePath)){
+                fops.println(ASAautomation.config);
+            } catch (Exception e){
+                this.console.println("Error Writing to the file location");
+            }
+        } catch (Exception ex) {
+                this.console.println("Error Writing to the file location");
+        }
+        
     }
 
     private void faqView() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+     private String getStringInput() {
+                
+        String value = "";
+        boolean valid = false; //set flag to invalid value entered
+try {
+        while(!valid) { // while a valid name has not been retrieved
+        
             
+            //prompt for the player's na
+        
+
+            value = this.keyboard.readLine();//get the name from the keyboard
+            value = value.trim(); //trim off the excess blanks
+            value = value.toUpperCase(); // converts to upper case letter  
+            
+ // and repeat again
+            
+            if (value.length() < 1) {
+               this.console.println(this.getClass().getName() + 
+                       "\n*****************************************************"
+                     + "\n***** Invalid value - the value cannot be blank *****"
+                     + "\n*****************************************************");
+              continue; // and repeat again
+}             
+            valid = true; // set flag to end repetition
 }
+} catch(Exception e) { 
+            this.console.println(this.getClass().getName() + "Error Reading Input: " + e.getMessage());
+            
+            }
+            return value;
+    }  
+}
+

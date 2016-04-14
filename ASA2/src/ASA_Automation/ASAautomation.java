@@ -20,10 +20,10 @@ import java.util.logging.Logger;
 public class ASAautomation {
     
     //Public to allow other classes to edit.
-    public static String config;
+   public static String config = "conf t";
    
-    private static PrintWriter outFile = null;
-    private static BufferedReader inFile = null;
+   private static PrintWriter outFile = null;
+   private static BufferedReader inFile = null;
    private static PrintWriter logFile = null;
     
     public static void main(String[] args) {

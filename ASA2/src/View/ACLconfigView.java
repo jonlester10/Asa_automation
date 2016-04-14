@@ -27,7 +27,12 @@ public class ACLconfigView {
     
     protected final BufferedReader keyboard = ASAautomation.getInFile();
     protected final PrintWriter console = ASAautomation.getOutFile();
-    
+    private String access;
+    private String action;
+    private String protocol;
+    private String source;
+    private String destination;
+    private String port;
 
     public void ACLconfigView() {
         
@@ -38,41 +43,49 @@ public class ACLconfigView {
         
         boolean done = false; // set flag to not done
         do {
-        //Access-list Query    
+        //Access-list Query
+        do {
         menu = acl.getAccessMenu();          
         String input = this.getInput();
             if (input.toUpperCase().equals("Q")) // user wants to quit
                 return; // exit the program
-        String access = input;
+        this.access = input;
         
+            } while (access == null);
         //Action Query
+        do{
         menu = acl.getActionMenu();
-        input = this.getOptionInput();
-        String action = acl.setAction(input);
-        
+        String input = this.getOptionInput();
+        this.action = acl.setAction(input);
+            } while (action == null);
         //Protocol Query
+        do {
         menu = acl.getProtocolMenu();
-        input = this.getInput();
-        String protocol = acl.setProtocol(input);
-        
+        String input = this.getInput();
+        this.protocol = acl.setProtocol(input);
+        } while (protocol == null);
         //Source Query
+        do {
         menu = acl.srcMenu();
-        input = this.getOptionInput();
+        String input = this.getOptionInput();
             if (input.toUpperCase().equals("Q")) // user wants to quit
                 return; // exit the program
-        String source = acl.getSrc(input); //user inputs source IP
-            
-        //Destination Query    
+        this.source = acl.getSrc(input); //user inputs source IP
+        } while (source == null);
+        //Destination Query
+        do {
         menu = acl.dstMenu();           
-        input = this.getOptionInput();
+        String input = this.getOptionInput();
             if (input.toUpperCase().equals("Q")) // user wants to quit
                 return; // exit the program
-        String destination = acl.setDst(input);
-        
+        this.destination = acl.setDst(input);
+        } while (destination == null);
         //Port Query
+        do {
         menu = acl.getPortMenu();
-        input = this.getOptionInput();
-        String port = acl.setPort(input);
+        String input = this.getOptionInput();
+        this.port = acl.setPort(input);
+        } while (port == null);
         
         done = acl.configCreation(access, action, source, destination, protocol, port);
         
