@@ -6,101 +6,53 @@
 package View;
 
 import ASA_Automation.ASAautomation;
-import Configurations.ACL_config;
+import Configurations.OBJ_config;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
 import java.util.Scanner;
+
 
 
 /**
  *
  * @author jblester
  */
-public class ACLconfigView {
-    
-    private String menu;    
+class Objectconfigview {
+    private String menu;
+    private String[] objects;
     private String promptMessage = 
                "\nPlease Enter Your Selection                                   "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ;
-    
     protected final BufferedReader keyboard = ASAautomation.getInFile();
     protected final PrintWriter console = ASAautomation.getOutFile();
-    private String access;
-    private String action;
-    private String protocol;
-    private String[] source;
-    private String[] destination;
-    private String[] port;
-    private String ACLconfig;
+    
+  public void Objectconfigview() {
+     
+      
+  }
+  public void display(){
+      OBJ_config conf = new OBJ_config();
+      
+      menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          +  "\n Please enter how many objects you wish to create             "
+          +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+      
+      String input = getInput();
+      int num = parseInt(input);
+      
+      for (int i = 1; i < num; i++){
+          
+          
+          
+      }
+        
+        
+        
+        
 
-    public void ACLconfigView() {
-        
-    }
-    public void display() {
-        ACL_config acl = new ACL_config();
-        
-        
-        boolean done = false; // set flag to not done
-        do {
-        //Access-list Query
-        do {
-        menu = acl.getAccessMenu();          
-        String input = this.getInput();
-            if (input.toUpperCase().equals("Q")) // user wants to quit
-                return; // exit the program
-        this.access = input;
-        
-            } while (access == null);
-        //Action Query
-        do{
-        menu = acl.getActionMenu();
-        String input = this.getOptionInput();
-        this.action = acl.setAction(input);
-            } while (action == null);
-        //Protocol Query
-        do {
-        menu = acl.getProtocolMenu();
-        String input = this.getInput();
-        this.protocol = acl.setProtocol(input);
-        } while (protocol == null);
-        //Source Query
-        do {
-        menu = acl.srcMenu();
-        String input = this.getOptionInput();
-            if (input.toUpperCase().equals("Q")) // user wants to quit
-                return; // exit the program
-        this.source = acl.getSrc(input); //user inputs source IP
-        } while (source == null);
-        //Destination Query
-        do {
-        menu = acl.dstMenu();           
-        String input = this.getOptionInput();
-            if (input.toUpperCase().equals("Q")) // user wants to quit
-                return; // exit the program
-        this.destination = acl.setDst(input);
-        } while (destination == null);
-        //Port Query
-        do {
-        menu = acl.getPortMenu();
-        String input = this.getOptionInput();
-        this.port = acl.setPort(input);
-        } while (port == null);
-        
-        done = acl.configCreation(access, action, source, destination, protocol, port);
-        this.ACLconfig = acl.getACLconfig();
-        
-        } while (!done);
-    }
-
-    public String getACLconfig() {
-        return ACLconfig;
-    }
-
-    public void setACLconfig(String ACLconfig) {
-        this.ACLconfig = ACLconfig;
-    }
- 
-public String getInput() {
+  }
+  public String getInput() {
     String value = "";
     try {  
         
@@ -129,6 +81,7 @@ public String getInput() {
     }
     return value; // return the value
     }
+  
 public String getOptionInput() {
         Scanner keyboard = new Scanner(System.in); //keyboard input stream
         String value = "";

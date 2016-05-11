@@ -24,11 +24,13 @@ public class MainMenuView {
     private String promptMessage = 
                "\nPlease Enter Your Selection                                   "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ;
+    private String ACLconfig= "";
     
     public MainMenuView() {
         menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             +  "\n Main Menu                                                    "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            +  "\n O - Create Object                                            "
             +  "\n A - Create ACL Entry                                         "
             +  "\n W - Write Configuration to a file                            "
             +  "\n Q - Quit Program                                             "
@@ -118,6 +120,7 @@ public class MainMenuView {
         ACLconfigView acl = new ACLconfigView();
         acl.display();
         
+        this.ACLconfig += acl.getACLconfig();
     }
 
     private void natConfig() {
@@ -125,7 +128,9 @@ public class MainMenuView {
     }
 
     private void objConfig() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Objectconfigview obj = new Objectconfigview();
+        obj.display();
+        
     }
 
     private void objGroupConfig() {
@@ -136,6 +141,7 @@ public class MainMenuView {
         this.console.println("\n\nEnter the file path for the output of the configuration:");
         String filePath = this.getStringInput();
         try {
+            ASAautomation.config += this.ACLconfig;
             ASAautomation.config += "\r\nend"
                                   + "\r\nwr mem";
             try (PrintWriter fops = new PrintWriter(filePath)){

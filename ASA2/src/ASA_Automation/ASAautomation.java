@@ -26,8 +26,8 @@ public class ASAautomation {
    private static BufferedReader inFile = null;
    private static PrintWriter logFile = null;
     
-    public static void main(String[] args) {
-        
+    public static void main(String[] args){
+
              try {
          ASAautomation.inFile = new BufferedReader(new InputStreamReader(System.in));
          
@@ -46,7 +46,7 @@ public class ASAautomation {
                             "\nCause: " + e.getCause() +
                             "\nMessage: " + e.getMessage());
          
-         e.printStackTrace();;
+         e.printStackTrace();
      } finally {
          try {
              if (ASAautomation.inFile != null){
