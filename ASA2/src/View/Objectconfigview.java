@@ -21,38 +21,81 @@ import java.util.Scanner;
 class Objectconfigview {
     private String menu;
     private String[] objects;
-    private String promptMessage = 
+    private final String promptMessage = 
                "\nPlease Enter Your Selection                                   "
             +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" ;
     protected final BufferedReader keyboard = ASAautomation.getInFile();
     protected final PrintWriter console = ASAautomation.getOutFile();
     
+    private String name;
+    private String option;
   public void Objectconfigview() {
      
       
   }
+  
   public void display(){
+        this.menu = 
+             "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          +  "\n Choose the type of object to create.                         "
+          +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          +  "\n N - Network                                                  "
+          +  "\n S - Service                                                  "                         
+          +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+        String input = getInput();
+        
+        switch(input) {
+            case "N":
+                this.objectNetwork();
+                break;
+            case "S":
+                this.objectService();
+                break;
+            default:
+                this.console.println(
+                                     "\n***************************************"
+                                   + "\n***** Invalid Selection Try Again *****"
+                                   + "\n***************************************");
+                break;
+        }
+        
+  }
+  
+  private void objectNetwork(){
       OBJ_config conf = new OBJ_config();
       
-      menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          +  "\n Please enter how many objects you wish to create             "
+      this.menu = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          +  "\n Please enter how many objects you wish to create.            "
           +  "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-      
+      this.console.println(promptMessage);
       String input = getInput();
-      int num = parseInt(input);
-      
-      for (int i = 1; i < num; i++){
-          
-          
-          
-      }
-        
-        
-        
-        
+      int num = parseInt(input);      
+            for (int i = 1; i < num; i++){
+          boolean done = false;
+          do {
+            do {
+            this.menu = conf.nameMenu();
+            this.name = "";
+            
+            } while (name == null);
+            do {
+            this.menu = conf.objTypeMenu();
+            this.option = getInput();
+            } while (option == null);
+                  
+            
+            done = conf.objCreate(name, input);
 
+          } while (done == false);
+  
+      }
   }
-  public String getInput() {
+  
+ private void objectService() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+ public String getInput() {
     String value = "";
     try {  
         
@@ -62,7 +105,8 @@ class Objectconfigview {
         
             //prompt for the player's name
             this.console.println(this.menu);
-        
+            this.console.println(promptMessage);
+            
             value = this.keyboard.readLine(); //get the name from the keyboard
             value = value.trim(); //trim off the excess blanks
             value = value.toUpperCase();            // if the name is invalid (less than one character in length))
@@ -82,7 +126,7 @@ class Objectconfigview {
     return value; // return the value
     }
   
-public String getOptionInput() {
+ public String getOptionInput() {
         Scanner keyboard = new Scanner(System.in); //keyboard input stream
         String value = "";
         boolean valid = false; //set flag to invalid value entered
@@ -116,4 +160,5 @@ public String getOptionInput() {
         }
     return value; // return the value
     }  
+
 }
